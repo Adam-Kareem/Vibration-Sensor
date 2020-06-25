@@ -3,6 +3,7 @@
 
 #include <heltec.h>
 #include "OLEDDisplayUi.h"
+#include "xor_logo.h" //xor logo in xbm format
 
 
 //Ui
@@ -22,7 +23,7 @@ frame displayframe(frame Stat_1,  frame Stat_2, frame Stat_3, frame Stat_4, fram
   display->drawString(x + 55, y + 15, Val_2);
   display->drawString(x + 55, y + 15, Val_3);
   display->drawString(x + 55, y + 25, Val_4);
-  display->drawXbm(x + 95, y + 10, 31, 39, hhlogo_bits);
+  display->drawXbm(x + 95, y + 10, 31, 39, logo_bits);
 
  return 0; 
 } 
@@ -41,28 +42,25 @@ void drawFrame1(OLEDDisplay *display, OLEDDisplayUiState *state, int16_t x, int1
   display->setFont(ArialMT_Plain_16);
   display->drawString(x + 20, y + 10, "XOR");
   display->drawString(x + 20, y + 25, "Systems");
-  display->drawXbm(x + 95, y + 10, 31, 39, hhlogo_bits);
+  display->drawXbm(x + 95, y + 10, 31, 39, logo_bits);
 }
 
 void drawFrame2(OLEDDisplay *display, OLEDDisplayUiState *state, int16_t x, int16_t y) //Frame 2: Sensor Values 
 {
-  displayframe<std::string,std::string,std::string,std::string,int,int,int,int>("hello", "hello", "hello", "hello", "hello", 1, 2, 3, 4);
-
+  //displayframe<std::string,std::string,std::string,std::string,int,int,int,int>("hello", "hello", "hello", "hello", "hello", 1, 2, 3, 4);
 }
 
 void drawFrame3(OLEDDisplay *display, OLEDDisplayUiState *state, int16_t x, int16_t y) //Frame 3: WiFi/Data Status 
 {
-
+  //displayframe<std::string,std::string,std::string,std::string,int,int,int,int>("hello", "hello", "hello", "hello", "hello", 1, 2, 3, 4);
 }
 
 void drawFrame4(OLEDDisplay *display, OLEDDisplayUiState *state, int16_t x, int16_t y) //Frame 4: Debugging 
 {
-
+  //displayframe<std::string,std::string,std::string,std::string,int,int,int,int>("hello", "hello", "hello", "hello", "hello", 1, 2, 3, 4);
 }
 
 FrameCallback frames[] = {drawFrame1, drawFrame2, drawFrame3, drawFrame4}; //Frame Array 
-
-
 
 
 #endif //DISPLAY

@@ -1,8 +1,0 @@
-#ifndef DATATRANSMIT
-#define DATATRANSMIT
-
-
-
-
-
-#endif //DATATRANSMIT
