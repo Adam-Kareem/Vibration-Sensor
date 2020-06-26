@@ -7,7 +7,14 @@
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 
-float acc_data;
+struct sensor_data 
+{
+float x;
+float y;
+float z;
+};
+
+sensor_data acc_data;
 
 Adafruit_MPU6050 mpu;
 
@@ -26,10 +33,10 @@ void MPU6050_loop()
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp);
 
-  acc_data = a.acceleration.x;
+  acc_data.x = a.acceleration.x;
+  acc_data.y = a.acceleration.y;
+  acc_data.z = a.acceleration.z;
 
-  //acc_data[1] = a.acceleration.y;
-  //acc_data[2] = a.acceleration.z;
 
   /* Print out the values */
   Serial.print("Acceleration X: ");

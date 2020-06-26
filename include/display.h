@@ -11,7 +11,7 @@
 //Ui initilisation
 extern Heltec_ESP32 Heltec;
 OLEDDisplayUi ui(Heltec.display);
-String display_pos[7];
+String display_pos[3];
 
 void msOverlay(OLEDDisplay *display, OLEDDisplayUiState *state) //Defines times between frames 
 {
@@ -34,13 +34,9 @@ void drawFrame2(OLEDDisplay *display, OLEDDisplayUiState *state, int16_t x, int1
     display->setTextAlignment(TEXT_ALIGN_LEFT);
     display->setFont(ArialMT_Plain_10);
     display->drawString(x, y + 5, display_pos[0]);
-    display->drawString(x, y + 15, display_pos[2]);
-    display->drawString(x, y + 25, display_pos[4]);
-    display->drawString(x, y + 35, display_pos[6]);
-    display->drawString(x + 55, y + 5, display_pos[1]);
-    display->drawString(x + 55, y + 15, display_pos[3]);
-    display->drawString(x + 55, y + 15, display_pos[5]);
-    display->drawString(x + 55, y + 25, display_pos[7]);
+    display->drawString(x, y + 15, display_pos[1]);
+    display->drawString(x, y + 25, display_pos[2]);
+    display->drawString(x, y + 35, display_pos[3]);
   }
 
 FrameCallback frames[] = {drawFrame2,drawFrame2}; //Frame Array 
