@@ -1,0 +1,39 @@
+{
+    "description": "Google Firebase Realtime Database Arduino Client Library for Espressif ESP32", 
+    "repository": {
+        "url": "https://github.com/mobizt/Firebase-ESP32", 
+        "type": "git"
+    }, 
+    "platforms": [
+        "espressif32"
+    ], 
+    "export": {
+        "exclude": [
+            "extras", 
+            "docs", 
+            "tests", 
+            "test", 
+            "*.doxyfile", 
+            "*.pdf"
+        ], 
+        "include": null
+    }, 
+    "authors": [
+        {
+            "maintainer": true, 
+            "name": "Mobizt", 
+            "url": null, 
+            "email": "k_suwatchai@hotmail.com"
+        }
+    ], 
+    "keywords": [
+        "communication"
+    ], 
+    "id": 6217, 
+    "name": "Firebase ESP32 Client", 
+    "frameworks": [
+        "arduino"
+    ], 
+    "version": "3.7.3", 
+    "homepage": null
+}

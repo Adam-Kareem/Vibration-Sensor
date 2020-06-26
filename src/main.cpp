@@ -1,26 +1,31 @@
 #include "display.h"
+#include "data_transmit.h"
+#include "vibration_Sensor.h"
 
-#define framecount 2
+#include <iostream> // std::cout
+#include <string>   // std::string, std::to_string
 
-FrameCallback frames[] = {drawFrame1,drawFrame2}; //Frame Array 
+String f_to_str(float f);
 
 void setup()
 {
-  
-  Heltec.begin(true /*DisplayEnable Enable*/, false /*LoRa Disable*/, false /*Serial Enable*/); //Oled Enable
-  ui.setTargetFPS(30); //Refresh Rate 
-  ui.init(); //Initialise 
-  ui.setIndicatorPosition(BOTTOM); //Indicator = Framecallback Status 
-  ui.setIndicatorDirection(LEFT_RIGHT); 
-  ui.setFrameAnimation(SLIDE_LEFT);
-  ui.setFrames(frames, framecount); 
-  Heltec.display->flipScreenVertically();
+    oled_setup(); //OLED Setup
+    auth_setup(); //WiFi/Firebase Authentication Setup
+    MPU6050_setup();
 }
-
 
 void loop()
 {
-    ui.update(); //Update Screen 
+    ui.update(); //Update Screen
+    MPU6050_loop();
+    display_pos[0] = f_to_str(acc_data);
+    display_pos[1] = "test";
+    
+}
 
-
+String f_to_str(float f)
+{
+    char str[16];
+    snprintf(str, sizeof(str), "%.2f", f);
+    return str;
 }
