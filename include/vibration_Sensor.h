@@ -20,7 +20,6 @@ Adafruit_MPU6050 mpu;
 
 void MPU6050_setup(void)
 {
-  Serial.begin(115200);
   mpu.begin();
   mpu.setAccelerometerRange(MPU6050_RANGE_16_G);
   mpu.setFilterBandwidth(MPU6050_BAND_260_HZ);

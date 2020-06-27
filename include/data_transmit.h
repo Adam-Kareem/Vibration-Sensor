@@ -1,12 +1,14 @@
 #ifndef DATATRANSMIT
 #define DATATRANSMIT
 
+#define Mhz_to_s 160000000
+
 //Wi_Fi
 #include <WiFi.h>
 #include <FirebaseESP32.h>
 
-#define FIREBASE_HOST "ESP32-Vibration.firebaseio.com"
-#define FIREBASE_AUTH "AIzaSyD-gFg0FZiEjWY1z0EQiPgDKTE_MJkygKs"
+#define FIREBASE_HOST "https://esp32-test-1e21e.firebaseio.com/"
+#define FIREBASE_AUTH "cRM15BaTtSka6UzFBnNUSNXpffg4OX6Oi9FIvmzH"
 #define WIFI_SSID "AH"
 #define WIFI_PASSWORD "123456789"
 
@@ -16,49 +18,38 @@ WiFiClient client;
 String Wi_fi_Output; //WiFi Status
 String Data_Output;  //Data Status
 
+int j = 0;
+
 void auth_setup()
 {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-  Firebase.reconnectWiFi(true);
-}
 
-/*
-void fb_payload()
-{
-
-    Firebase.setTimestamp(firebaseData, path + "/Set/Timestamp")
-
-
-
-
-}
-
-if (Firebase.setTimestamp(firebaseData, path + "/Set/Timestamp"))
+  while (WiFi.status() != WL_CONNECTED)
   {
-    Serial.println("PASSED");
-    Serial.println("PATH: " + firebaseData.dataPath());
-    Serial.println("TYPE: " + firebaseData.dataType());
-
-    //Timestamp saved in millisecond, get its seconds from intData()
-    Serial.print("TIMESTAMP (Seconds): ");
-    Serial.println(firebaseData.intData());
-
-    //Or print the total milliseconds from doubleData()
-    //Due to bugs in Serial.print in Arduino library, use printf to print double instead.
-    printf("TIMESTAMP (milliSeconds): %.0lf\n", firebaseData.doubleData());
-
-    //Or print it from payload directly
-    Serial.print("TIMESTAMP (milliSeconds): ");
-    Serial.println(firebaseData.payload());
-
-    //Due to some internal server error, ETag cannot get from setTimestamp
-    //Try to get ETag manually
-    Serial.println("ETag: " + Firebase.getETag(firebaseData, path + "/Set/Timestamp"));
-    Serial.println("------------------------------------");
-    Serial.println();
+    display_pos[0] = "Attempting WiFi connect";
+    ui.update();
   }
 
-*/
+  display_pos[0] = "Connected with IP:";
+  display_pos[1] = WiFi.localIP().toString();
+  ui.update();
+
+  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+  Firebase.reconnectWiFi(true);
+
+  if (Firebase.pushTimestamp(firebaseData, "Connection/Timestamp"))
+  {
+    display_pos[2] = "Set Firebase timestamp";
+  }
+
+  /* buggy 
+  else
+  {
+    display_pos[2] = "Firebase error";
+    display_pos[3] = firebaseData.errorReason();
+  }*/
+
+  ui.update();
+}
 
 #endif //DATATRANSMIT
