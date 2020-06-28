@@ -4,32 +4,15 @@
 //Display Header files
 #include "heltec.h"
 #include "OLEDDisplayUi.h"
-#include "xor_logo.h" 
 
-#define framecount 2
+#define framecount 1
 
 //Ui initilisation
 extern Heltec_ESP32 Heltec;
 OLEDDisplayUi ui(Heltec.display);
 String display_pos[3];
-
-void msOverlay(OLEDDisplay *display, OLEDDisplayUiState *state) //Defines times between frames 
-{
-  display->setTextAlignment(TEXT_ALIGN_RIGHT);
-  display->setFont(ArialMT_Plain_10);
-  display->drawString(128, 0, String(millis()));
-}
-
-void drawFrame1(OLEDDisplay *display, OLEDDisplayUiState *state, int16_t x, int16_t y) //Frame 1: Welcome 
-{
-  display->setTextAlignment(TEXT_ALIGN_LEFT);
-  display->setFont(ArialMT_Plain_16);
-  display->drawString(x + 20, y + 10, "XOR");
-  display->drawString(x + 20, y + 25, "Systems");
- // display->drawXbm(x + 95, y + 10, 31, 39, logo_bits); //XOR logo, image needs rectified
-}
-
-void drawFrame2(OLEDDisplay *display, OLEDDisplayUiState *state, int16_t x, int16_t y) 
+ 
+void drawFrame1(OLEDDisplay *display, OLEDDisplayUiState *state, int16_t x, int16_t y) 
   {
     display->setTextAlignment(TEXT_ALIGN_LEFT);
     display->setFont(ArialMT_Plain_10);
@@ -39,17 +22,17 @@ void drawFrame2(OLEDDisplay *display, OLEDDisplayUiState *state, int16_t x, int1
     display->drawString(x, y + 35, display_pos[3]);
   }
 
-FrameCallback frames[] = {drawFrame2,drawFrame2}; //Frame Array 
+FrameCallback frames[] = {drawFrame1}; //Frame Array 
 
 void oled_setup()
 {
   //Oled Setup 
   Heltec.begin(true /*DisplayEnable Enable*/, false /*LoRa Disable*/, false /*Serial Enable*/); //Oled Enable
-  ui.setTargetFPS(30); //Refresh Rate 
+  ui.setTargetFPS(60); //Refresh Rate 
   ui.init(); //Initialise 
-  ui.setIndicatorPosition(BOTTOM); 
-  ui.setIndicatorDirection(LEFT_RIGHT); 
-  ui.setFrameAnimation(SLIDE_LEFT);
+  Heltec.display->flipScreenVertically();
+  Heltec.display->setFont(ArialMT_Plain_10);
+  display_pos[0] = "XOR sytems";
   ui.setFrames(frames, framecount); 
   Heltec.display->flipScreenVertically();
 }

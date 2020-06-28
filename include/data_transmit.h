@@ -1,6 +1,8 @@
 #ifndef DATATRANSMIT
 #define DATATRANSMIT
 
+//pins 15 (SCL) and 4 (SDA) for I2C 
+
 #define Mhz_to_s 160000000
 
 //Wi_Fi

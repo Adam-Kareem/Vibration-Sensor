@@ -19,13 +19,17 @@ void loop()
 {
     ui.update(); //Update Screen
     MPU6050_loop();
-    display_pos[0] = "x axis: " + f_to_str(acc_data.x) + "  m/s²";
-    display_pos[1] = "y axis: " + f_to_str(acc_data.y) + "  m/s²";
-    display_pos[2] = "z axis: " + f_to_str(acc_data.z) + "  m/s²";
-    Firebase.pushFloat(firebaseData,"/Acc/x axis",acc_data.x);
-    Firebase.pushFloat(firebaseData,"/Acc/y axis",acc_data.y);
-    Firebase.pushFloat(firebaseData,"/Acc/z axis",acc_data.z);
-    Firebase.pushTimestamp(firebaseData, "/Acc/Timestamp");
+
+    display_pos[0] = "x axis: " + f_to_str(gyro_data.x) + "  rad/s";
+    display_pos[1] = "y axis: " + f_to_str(gyro_data.y) + "  rad/s";
+    display_pos[2] = "z axis: " + f_to_str(gyro_data.z) + "  rad/s";
+    Firebase.pushFloat(firebaseData,"/Gyro/x axis",gyro_data.x);
+    Firebase.pushFloat(firebaseData,"/Gyro/y axis",gyro_data.y);
+    Firebase.pushFloat(firebaseData,"/Gyro/z axis",gyro_data.z);
+    Firebase.pushFloat(firebaseData,"/Freq/x axis",freq_data.x);
+    Firebase.pushFloat(firebaseData,"/Freq/y axis",freq_data.y);
+    Firebase.pushFloat(firebaseData,"/Freq/z axis",freq_data.z);
+    Firebase.pushTimestamp(firebaseData, "datA/Timestamp");
 }
 
 String f_to_str(float f)
