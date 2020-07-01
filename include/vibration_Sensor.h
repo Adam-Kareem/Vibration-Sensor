@@ -1,69 +1,51 @@
+//Author : Adam Hussain
+
 #ifndef VIB_SENSE
 #define VIB_SENSE
 
-// Basic demo for accelerometer readings from Adafruit MPU6050
-
 #include <Adafruit_MPU6050.h>
-//#include <Adafruit_Sensor.h>
 #include <Wire.h>
 
-#define w_to_F 6.283185
-
-struct g_data 
-{
-float x;
-float y;
-float z;
-};
-
-struct f_data 
-{
-float x;
-float y;
-float z;
-};
-
-g_data gyro_data;
-f_data freq_data;
+#define w_to_F 6.283185 //2*pi
 
 Adafruit_MPU6050 mpu;
-
-/* Create new sensor events */
 sensors_event_t a, g, temp;
 
+/*Updates Gyro and frequency values */
+class MPU6050_data
+{
+public:
+  float gx, gy, gz; //gyro xyz
+  float fx, fy, fz; //frequency xyz
+  String Status;    //sensor operational status
+
+  void update()
+  {
+    mpu.getEvent(&a, &g, &temp);
+
+    gx = abs(g.gyro.x);
+    gy = abs(g.gyro.y);
+    gz = abs(g.gyro.z);
+
+    fx = g.gyro.x / w_to_F;
+    fy = g.gyro.y / w_to_F;
+    fz = g.gyro.z / w_to_F;
+  }
+};
+
+MPU6050_data mpu_data;
+
+/*init MPU sensor*/
 void MPU6050_setup(void)
 {
+  //sensor startup and return status
   mpu.begin();
+  !mpu.begin() ? mpu_data.Status = "MPU6050 failure" : mpu_data.Status = "MPU6050 Found!";
+  Serial.println(mpu_data.Status);
 
-   // Try to initialize!
-  if (!mpu.begin()) {
-    Serial.println("Failed to find MPU6050 chip");
-    while (1) {
-      delay(10);
-    }
-  }
-  Serial.println("MPU6050 Found!");
-
-  mpu.setAccelerometerRange(MPU6050_RANGE_2_G);
-  mpu.setFilterBandwidth(MPU6050_BAND_260_HZ);
-  mpu.setCycleRate(MPU6050_CYCLE_20_HZ);
-}
-
-void MPU6050_loop()
-{
-
-  /* Get new sensor events with the readings */
-
-  sensors_event_t a;
-  mpu.getEvent(&a, &g, &temp);
-  
-  gyro_data.x = abs(g.gyro.x);
-  gyro_data.y = abs(g.gyro.y);
-  gyro_data.z = abs(g.gyro.z);
-
-  freq_data.x = g.gyro.x/w_to_F;
-  freq_data.y = g.gyro.y/w_to_F;
-  freq_data.z = g.gyro.z/w_to_F;
+  mpu.setFilterBandwidth(MPU6050_BAND_260_HZ); //Low pass filter off
+  //mpu.setGyroRange(MPU6050_RANGE_250_DEG);   //defaults to 250deg
+  mpu.setCycleRate(MPU6050_CYCLE_20_HZ); //sample rate
 }
 
 #endif

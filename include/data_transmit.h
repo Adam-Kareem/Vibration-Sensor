@@ -1,11 +1,10 @@
+//Author : Adam Hussain
+
 #ifndef DATATRANSMIT
 #define DATATRANSMIT
 
-//pins 15 (SCL) and 4 (SDA) for I2C 
+//pins 15 (SCL) and 4 (SDA) for I2C
 
-#define Mhz_to_s 160000000
-
-//Wi_Fi
 #include <WiFi.h>
 #include <FirebaseESP32.h>
 
@@ -17,11 +16,7 @@
 FirebaseData firebaseData;
 WiFiClient client;
 
-String Wi_fi_Output; //WiFi Status
-String Data_Output;  //Data Status
-
-int j = 0;
-
+/*Establish and check connection to WiFi & Firebase*/
 void auth_setup()
 {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -42,16 +37,21 @@ void auth_setup()
   if (Firebase.pushTimestamp(firebaseData, "Connection/Timestamp"))
   {
     display_pos[2] = "Set Firebase timestamp";
+    ui.update();
   }
-
-  /* buggy 
-  else
-  {
-    display_pos[2] = "Firebase error";
-    display_pos[3] = firebaseData.errorReason();
-  }*/
-
-  ui.update();
 }
+
+/*PUSH all axis data using REST API*/
+class F_REST
+{
+public:
+  void Push(String folder_filepath, float data1, float data2, float data3)
+  {
+    Firebase.pushFloat(firebaseData, "/" + folder_filepath + "/X", data1);
+    Firebase.pushFloat(firebaseData, "/" + folder_filepath + "/Y", data2);
+    Firebase.pushFloat(firebaseData, "/" + folder_filepath + "/Z", data3);
+    Firebase.pushTimestamp(firebaseData, "/" + folder_filepath + "/Timestamp");
+  }
+};
 
 #endif //DATATRANSMIT
